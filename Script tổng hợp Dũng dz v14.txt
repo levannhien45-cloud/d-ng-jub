@@ -1,0 +1,176 @@
+repeat task.wait() until game:IsLoaded()
+
+local player = game.Players.LocalPlayer
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "DungDzHubV14"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- MAIN FRAME
+local main = Instance.new("Frame",gui)
+main.Size = UDim2.new(0,360,0,420)
+main.Position = UDim2.new(0.5,-180,0.5,-210)
+main.BackgroundColor3 = Color3.fromRGB(12,12,12)
+main.BorderSizePixel = 0
+main.Visible = false
+Instance.new("UICorner",main).CornerRadius = UDim.new(0,14)
+
+-- TITLE
+local title = Instance.new("TextLabel",main)
+title.Size = UDim2.new(1,0,0,45)
+title.BackgroundColor3 = Color3.fromRGB(18,18,18)
+title.Text = "⚡ Dũng dz Hub"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 18
+title.TextColor3 = Color3.fromRGB(255,255,255)
+Instance.new("UICorner",title)
+
+-- SCROLL
+local scroll = Instance.new("ScrollingFrame",main)
+scroll.Size = UDim2.new(1,-10,1,-55)
+scroll.Position = UDim2.new(0,5,0,50)
+scroll.CanvasSize = UDim2.new(0,0,0,700)
+scroll.BackgroundTransparency = 1
+scroll.ScrollBarThickness = 6
+
+local grid = Instance.new("UIGridLayout",scroll)
+grid.CellSize = UDim2.new(0,160,0,50)
+grid.CellPadding = UDim2.new(0,8,0,8)
+
+-- SCRIPT LIST
+local scripts = {
+
+{"Turbo Lite",
+"https://raw.githubusercontent.com/TurboLite/Script/main/MainV2.lua"},
+
+{"Banana Hub",
+"https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc"},
+
+{"Gravity Hub",
+"https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua"},
+
+{"Tsuo Hub",
+"https://raw.githubusercontent.com/Tsuo7/TsuoHub/main/Tsuoscripts"},
+
+{"Teddy Hub",
+"https://raw.githubusercontent.com/Teddyseetink/Haidepzai/refs/heads/main/TEDDYHUB-FREEMIUM"},
+
+{"Bacon Hub",
+"https://raw.githubusercontent.com/vinh129150/hack/refs/heads/main/BaconHub.lua"},
+
+{"Tumadam Hub",
+"https://raw.githubusercontent.com/TumadamMod/cwertyur/refs/heads/main/TumadamEng.lua"},
+
+{"Jade Hub",
+"https://raw.githubusercontent.com/GoblinKun009/Script/refs/heads/main/JadeHub"},
+
+{"Orange Hub",
+"https://raw.githubusercontent.com/HieuDepTrai-Z/Dev_Orange/refs/heads/main/OrangeHub.lua"},
+
+{"Dragon Hub",
+"https://raw.githubusercontent.com/dragonhubdev/dragonwitheveryone/refs/heads/main/Main-Premium.lua"},
+
+{"Zen Hub",
+"https://raw.githubusercontent.com/Itz-Npg/Roblox-Script/main/zenhubbf.lua"}
+
+}
+
+-- CREATE BUTTONS
+for i,v in pairs(scripts) do
+
+local b = Instance.new("TextButton",scroll)
+b.BackgroundColor3 = Color3.fromRGB(25,25,25)
+b.Text = v[1]
+b.Font = Enum.Font.GothamBold
+b.TextSize = 14
+b.TextColor3 = Color3.new(1,1,1)
+
+Instance.new("UICorner",b).CornerRadius = UDim.new(0,10)
+
+b.MouseButton1Click:Connect(function()
+
+pcall(function()
+loadstring(game:HttpGet(v[2]))()
+end)
+
+end)
+
+end
+
+-- OPEN BUTTON
+local open = Instance.new("TextButton",gui)
+open.Size = UDim2.new(0,55,0,55)
+open.Position = UDim2.new(0,20,0.5,-27)
+open.BackgroundColor3 = Color3.fromRGB(0,0,0)
+open.Text = "⚡"
+open.TextSize = 26
+open.TextColor3 = Color3.new(1,1,1)
+open.Font = Enum.Font.GothamBold
+Instance.new("UICorner",open).CornerRadius = UDim.new(1,0)
+
+open.MouseButton1Click:Connect(function()
+main.Visible = not main.Visible
+end)
+
+-- DRAG BUTTON
+local drag = false
+local dragStart
+local startPos
+
+open.InputBegan:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseButton1 then
+drag = true
+dragStart = input.Position
+startPos = open.Position
+end
+end)
+
+open.InputChanged:Connect(function(input)
+if drag then
+local delta = input.Position - dragStart
+open.Position = UDim2.new(
+startPos.X.Scale,
+startPos.X.Offset + delta.X,
+startPos.Y.Scale,
+startPos.Y.Offset + delta.Y
+)
+end
+end)
+
+open.InputEnded:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseButton1 then
+drag = false
+end
+end)
+
+-- DRAG MAIN
+local dragging=false
+local start
+local pos
+
+title.InputBegan:Connect(function(i)
+if i.UserInputType==Enum.UserInputType.MouseButton1 then
+dragging=true
+start=i.Position
+pos=main.Position
+end
+end)
+
+title.InputChanged:Connect(function(i)
+if dragging then
+local delta=i.Position-start
+main.Position=UDim2.new(
+pos.X.Scale,
+pos.X.Offset+delta.X,
+pos.Y.Scale,
+pos.Y.Offset+delta.Y
+)
+end
+end)
+
+title.InputEnded:Connect(function(i)
+if i.UserInputType==Enum.UserInputType.MouseButton1 then
+dragging=false
+end
+end)
